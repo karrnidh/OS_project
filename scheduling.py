@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import os
 import subprocess
 import pandas as pd
@@ -410,4 +410,3 @@ def main():
 
 if __name__ == "__main__":
     main()
->>>>>>> b87a185acccde9da355ff6e44ce220dc7afaf4ad
