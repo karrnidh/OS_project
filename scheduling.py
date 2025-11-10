@@ -1,23 +1,26 @@
-
-import os
 import subprocess
 import pandas as pd
 import matplotlib.pyplot as plt
 from dataclasses import dataclass, field
 from typing import List, Optional
-import random
 
-# ----------------------------
-# STEP 1: FETCH LINUX PROCESSES
-# ----------------------------
+# ================================================================
+# STEP 1: FETCH LIVE LINUX PROCESSES
+# ================================================================
 def fetch_processes(limit=5) -> pd.DataFrame:
     """
-    Fetch live processes using Linux `ps`.
+    Fetches live running processes from Linux using `ps`.
+    Extracts PID, command name, elapsed time, priority, nice value, and CPU usage.
     """
-    cmd = ["ps", "-eo", "pid,comm,etimes,pri,ni,pcpu", "--sort=-pcpu"]
-    raw = subprocess.check_output(cmd, text=True).strip().split("\n")
+    try:
+        cmd = ["ps", "-eo", "pid,comm,etimes,pri,ni,pcpu", "--sort=-pcpu"]
+        raw = subprocess.check_output(cmd, text=True).strip().split("\n")
+    except subprocess.CalledProcessError:
+        print("Error fetching processes.")
+        return pd.DataFrame()
+
     data = []
-    for line in raw[1:limit+1]:
+    for line in raw[1:limit+1]:  # skip header
         parts = line.split(None, 5)
         if len(parts) < 6:
             continue
@@ -32,9 +35,9 @@ def fetch_processes(limit=5) -> pd.DataFrame:
         })
     return pd.DataFrame(data)
 
-# ----------------------------
+# ================================================================
 # STEP 2: JOB DATA STRUCTURE
-# ----------------------------
+# ================================================================
 @dataclass
 class Job:
     pid: int
@@ -45,18 +48,18 @@ class Job:
     start: Optional[int] = None
     completion: Optional[int] = None
     remaining: int = field(init=False)
-    
+
     def __post_init__(self):
         self.remaining = self.burst
 
 def df_to_jobs(df: pd.DataFrame) -> List[Job]:
     """
-    Convert process dataframe to Job objects.
-    Map bursts to a reasonable simulation range (1–20).
+    Converts process DataFrame into a list of Job objects.
+    Caps ETIMES to a range 1–20 to simulate CPU bursts realistically.
     """
     jobs = []
     for _, r in df.iterrows():
-        burst = max(1, min(20, int(r.ETIMES)))  # cap for realistic simulation
+        burst = max(1, min(20, int(r.ETIMES)))
         jobs.append(Job(
             pid=int(r.PID),
             name=r.COMMAND,
@@ -65,14 +68,15 @@ def df_to_jobs(df: pd.DataFrame) -> List[Job]:
         ))
     return jobs
 
-# ----------------------------
+# ================================================================
 # STEP 3: SCHEDULING ALGORITHMS
-# ----------------------------
+# ================================================================
 def fcfs(jobs: List[Job]):
     t = 0
     gantt = []
     js = [Job(**{k: getattr(j, k) for k in ['pid','name','arrival','burst','priority']}) for j in jobs]
     js.sort(key=lambda x: x.arrival)
+
     for j in js:
         if t < j.arrival:
             t = j.arrival
@@ -87,6 +91,7 @@ def sjf(jobs: List[Job]):
     done = []
     gantt = []
     js = [Job(**{k: getattr(j, k) for k in ['pid','name','arrival','burst','priority']}) for j in jobs]
+
     while len(done) < len(js):
         ready = [j for j in js if j not in done and j.arrival <= t]
         if not ready:
@@ -105,6 +110,7 @@ def round_robin(jobs: List[Job], q=3):
     gantt = []
     js = [Job(**{k: getattr(j, k) for k in ['pid','name','arrival','burst','priority']}) for j in jobs]
     queue = js.copy()
+
     while any(j.remaining > 0 for j in queue):
         for j in queue:
             if j.remaining > 0:
@@ -124,12 +130,13 @@ def priority_scheduling(jobs: List[Job]):
     done = []
     gantt = []
     js = [Job(**{k: getattr(j, k) for k in ['pid','name','arrival','burst','priority']}) for j in jobs]
+
     while len(done) < len(js):
         ready = [j for j in js if j not in done and j.arrival <= t]
         if not ready:
             t += 1
             continue
-        cur = min(ready, key=lambda x: x.priority)  # smaller number = higher priority
+        cur = min(ready, key=lambda x: x.priority)  # lower = higher priority
         cur.start = t
         t += cur.burst
         cur.completion = t
@@ -137,13 +144,14 @@ def priority_scheduling(jobs: List[Job]):
         gantt.append((cur.pid, cur.start, cur.completion))
     return done, gantt
 
-# ----------------------------
-# STEP 4: METRICS & GANTT
-# ----------------------------
+# ================================================================
+# STEP 4: METRICS & GANTT CHARTS
+# ================================================================
 def compute_metrics(jobs: List[Job]):
     total_wait = 0
     total_turn = 0
     metrics = []
+
     for j in jobs:
         wait = j.completion - j.arrival - j.burst
         total_wait += wait
@@ -158,6 +166,7 @@ def compute_metrics(jobs: List[Job]):
             "Turnaround": j.completion - j.arrival,
             "Priority": j.priority
         })
+
     df = pd.DataFrame(metrics)
     return df, total_wait / len(jobs), total_turn / len(jobs)
 
@@ -165,20 +174,25 @@ def plot_gantt(gantt, title):
     plt.figure(figsize=(8, 3))
     for i, (pid, start, end) in enumerate(gantt):
         plt.barh(i, end - start, left=start)
-        plt.text((start+end)/2, i, f"P{pid}", va='center', ha='center', color='white')
+        plt.text((start + end) / 2, i, f"P{pid}", va='center', ha='center', color='white')
     plt.xlabel("Time")
     plt.ylabel("Process")
     plt.title(title)
     plt.tight_layout()
-    plt.show()
+    plt.savefig(f"gantt_{title.replace(' ', '_').lower()}.png")
+    plt.close()
 
-# ----------------------------
-# STEP 5: MAIN
-# ----------------------------
+# ================================================================
+# STEP 5: MAIN EXECUTION
+# ================================================================
 def main():
     df = fetch_processes(limit=5)
-    print("\nLive Linux processes:")
-    print(df[["PID","COMMAND","ETIMES","PRI","NI","PCPU"]])
+    if df.empty:
+        print("No process data found. Exiting.")
+        return
+
+    print(f"\nFetched {len(df)} Linux processes for simulation:\n")
+    print(df[["PID", "COMMAND", "ETIMES", "PRI", "NI", "PCPU"]])
 
     jobs = df_to_jobs(df)
 
@@ -200,8 +214,7 @@ def main():
         summary.append((name, avg_wt, avg_tat))
 
     print("\nSummary Comparison:")
-    print(pd.DataFrame(summary, columns=["Algorithm","Avg Waiting","Avg Turnaround"]))
+    print(pd.DataFrame(summary, columns=["Algorithm", "Avg Waiting", "Avg Turnaround"]))
 
 if __name__ == "__main__":
     main()
-
