@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 from dataclasses import dataclass, field
 from typing import List, Optional
 
+# Detect if running on a GUI machine or EC2 headless environment
+HEADLESS = not os.environ.get("DISPLAY")
+
+
 # ----------------------------
 # STEP 1: FETCH LINUX PROCESSES
 # ----------------------------
@@ -43,6 +47,7 @@ def fetch_processes(limit=5) -> pd.DataFrame:
         }
         return pd.DataFrame(sample)
 
+
 # ----------------------------
 # STEP 2: JOB DATA STRUCTURE
 # ----------------------------
@@ -74,11 +79,13 @@ def df_to_jobs(df: pd.DataFrame) -> List[Job]:
         ))
     return jobs
 
+
 # ----------------------------
 # STEP 3: SCHEDULING ALGORITHMS
 # ----------------------------
 def clone_jobs(jobs):
     return [Job(j.pid, j.name, j.arrival, j.burst, j.priority) for j in jobs]
+
 
 def fcfs(jobs: List[Job]):
     t = 0
@@ -93,6 +100,7 @@ def fcfs(jobs: List[Job]):
         j.completion = t
         gantt.append((j.pid, j.start, j.completion))
     return js, gantt
+
 
 def sjf(jobs: List[Job]):
     t = 0
@@ -112,6 +120,7 @@ def sjf(jobs: List[Job]):
         gantt.append((cur.pid, cur.start, cur.completion))
     return done, gantt
 
+
 def priority_scheduling(jobs: List[Job]):
     t = 0
     done = []
@@ -129,6 +138,7 @@ def priority_scheduling(jobs: List[Job]):
         done.append(cur)
         gantt.append((cur.pid, cur.start, cur.completion))
     return done, gantt
+
 
 def round_robin(jobs: List[Job], q=3):
     t = 0
@@ -148,6 +158,7 @@ def round_robin(jobs: List[Job], q=3):
                 if j.remaining == 0:
                     j.completion = t
     return js, gantt
+
 
 # ----------------------------
 # STEP 4: METRICS & GANTT
@@ -173,16 +184,29 @@ def compute_metrics(jobs: List[Job]):
     df = pd.DataFrame(metrics)
     return df, total_wait / len(jobs), total_turn / len(jobs)
 
+
 def plot_gantt(gantt, title):
     plt.figure(figsize=(8, 3))
     for i, (pid, start, end) in enumerate(gantt):
         plt.barh(i, end - start, left=start)
-        plt.text((start + end) / 2, i, f"P{pid}", va='center', ha='center', color='white')
+        plt.text((start + end) / 2, i, f"P{pid}",
+                 va='center', ha='center', color='white')
+
     plt.xlabel("Time")
     plt.ylabel("Process")
     plt.title(title)
     plt.tight_layout()
-    plt.show()
+
+    # Save on EC2, show locally
+    if HEADLESS:
+        filename = title.replace(" ", "_").replace("-", "_") + ".png"
+        plt.savefig(filename)
+        print(f"📁 Saved Gantt chart to: {filename}")
+    else:
+        plt.show()
+
+    plt.close()
+
 
 # ----------------------------
 # STEP 5: MAIN
@@ -205,10 +229,13 @@ def main():
     for name, func in algos.items():
         js, gantt = func(jobs)
         dfres, avg_wt, avg_tat = compute_metrics(js)
+
         print(f"\n--- {name} ---")
         print(dfres)
         print(f"Avg Waiting = {avg_wt:.2f}, Avg Turnaround = {avg_tat:.2f}")
+
         plot_gantt(gantt, f"Gantt Chart - {name}")
+
         summary.append((name, avg_wt, avg_tat))
 
     print("\nSummary Comparison:")
