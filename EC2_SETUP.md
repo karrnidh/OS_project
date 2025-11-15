@@ -10,11 +10,11 @@ This guide explains how to:
 
 ---
 
-# 🔐 1. Fix Permissions on `.pem` Key
+# 1. Fix Permissions on `.pem` Key
 
 ### **Windows (PowerShell)**
 
-```powershell
+``powershell
 icacls keypair.pem /inheritance:r
 icacls keypair.pem /grant:r "$($env:UserName):(R)"
 Linux / macOS
