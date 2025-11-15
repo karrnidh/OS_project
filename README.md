@@ -1,37 +1,73 @@
-# OS_project
+# OS Project – Process Scheduling Simulator with Linux Integration
 
-# 🧮 Process Scheduling and IP Address Subnetting Simulator with Linux Integration
-
-A Python-based **CPU Scheduling Simulator** that fetches **live Linux processes** and runs them through multiple scheduling algorithms.  
-It calculates **waiting time**, **turnaround time**, and shows **Gantt charts** for each algorithm.
+This project implements a **CPU Scheduling Simulator** in Python and integrates it with **live Linux process data** using the `ps` command. It also includes a **Subnetting Tool** to support networking and CIDR concepts.
 
 ---
 
-## ⚙️ File Information
+## Project Components
 
-📄 **File:** `scheduling.py`  
-🧠 **Purpose:** Simulate how an Operating System schedules processes using:
-- First Come First Serve (FCFS)
-- Shortest Job First (SJF)
-- Round Robin (RR)
-- Priority Scheduling
+### **1. Process Scheduling Simulator (`scheduling.py`)**
+
+This script:
+
+- Fetches live process data on Linux using: ps -eo pid,comm,etimes,pri,ni,pcpu --sort=-pcpu
+- Falls back to a sample dataset on non-Linux systems.
+- Converts processes into internal **Job objects**.
+- Simulates four CPU scheduling algorithms:
+- **FCFS** (First-Come, First-Served)
+- **SJF** (Shortest Job First, non-preemptive)
+- **Round Robin** (quantum = 3)
+- **Priority Scheduling** (lower value = higher priority)
+
+### Calculates:
+- Start time  
+- Completion time  
+- Waiting time  
+- Turnaround time  
+- Average waiting & turnaround time  
+
+### Gantt Charts:
+- Desktop → opens normally  
+- AWS EC2 → automatically saved as PNG (headless mode)  
 
 ---
 
-## 🚀 Features
+### **2. Subnetting Tool (`subnetting.py`)**
 
-- Fetches real-time process data from Linux using the `ps` command  
-- Converts system processes into simulated jobs  
-- Implements **four scheduling algorithms**  
-- Calculates average waiting and turnaround times  
-- Generates **Gantt charts** for visualization  
-- Provides comparison summary across all algorithms  
+Given a base network (CIDR notation) + required hosts per subnet, it computes:
+
+- New subnet prefix  
+- Subnet mask  
+- Number of subnets  
+- Usable hosts per subnet  
+- Addresses for each subnet:
+- Network address  
+- Broadcast address  
+- First & last usable host  
 
 ---
 
-## 🧰 Requirements
+## 📁 File Structure
+README.md ← Main project overview
+EC2_SETUP.md ← AWS EC2 setup guide (SSH, SCP, running code)
+scheduling.py ← CPU scheduling simulator
+subnetting.py ← Subnet calculator
 
-Before running, make sure you have Python 3.8+ and install these libraries:
+
+---
+
+## ⚙️ Requirements
+
+- Python **3.8+**
+- Install dependencies:
 
 ```bash
 pip install pandas matplotlib
+```
+
+## Running the Scripts
+Run Scheduling Simulator
+python3 scheduling.py
+
+Run Subnetting Tool
+python3 subnetting.py
