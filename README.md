@@ -7,10 +7,10 @@ It balances academic clarity, developer‑friendly documentation, and profession
 
 ##  Project Overview
 
-✔ **CPU Scheduling Simulator** – runs classical scheduling algorithms on real Linux process data  
-✔ **Subnetting Calculator** – computes subnet masks, usable hosts, and address ranges automatically  
-✔ **Cross‑platform behavior** – works on local machines and headless EC2 environments  
-✔ **Clear, structured outputs** – includes tables, Gantt charts, and subnet summaries  
+- **CPU Scheduling Simulator** – runs classical scheduling algorithms on real Linux process data  
+- **Subnetting Calculator** – computes subnet masks, usable hosts, and address ranges automatically  
+- **Cross‑platform behavior** – works on local machines and headless EC2 environments  
+- **Clear, structured outputs** – includes tables, Gantt charts, and subnet summaries  
 
 ---
 
