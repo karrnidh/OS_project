@@ -102,6 +102,7 @@ pip3 install pandas matplotlib
 
 ```bash
 python3 scheduling.py
+python3 subnetting.py
 ```
 
 ![Run Script Screenshot](img/IMAGE!10.jpg)
