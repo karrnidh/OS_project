@@ -26,6 +26,7 @@ This document explains how to:
 ![Step 3 EC2 Dashboard](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!3.jpg)
 
 2. After Clicking Launch Instance 
+
 ![Launch Instance](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!4.jpg)
 
 
@@ -34,15 +35,10 @@ This document explains how to:
 5. Create/Select Key Pair → download `.pem` file  
 6. Configure security group:  
    - Allow **SSH (port 22)** from *My IP*  
-7. Click **Launch Instance**
+7. Click **Launch Instance** then Click 'Connect'
 
 ![Instance Details](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!5.jpg)
 
-Once launched, copy:
-
-- **Public IPv4:**  
-- **Public DNS:** `ec2-xx-xx-xx-xx.compute-1.amazonaws.com`  
-- **Default user:** `ec2-user`
 
 ---
 
