@@ -38,11 +38,6 @@ This document explains how to:
 
 ![Instance Details](/mnt/data/0e155284-2d99-49d3-b094-5b9e48f962d9.jpg)
 
-Once launched, copy:
-
-- **Public IPv4:**  
-- **Public DNS:** `ec2-xx-xx-xx-xx.compute-1.amazonaws.com`  
-- **Default user:** `ec2-user`
 
 ---
 
@@ -72,6 +67,7 @@ If prompted → type **yes**.
 You are now inside the Linux machine.
 
 ---
+![Step 1 AWS Console](img/IMAGE!7.jpg)
 
 # 4. Upload Project Files to EC2 (SCP)
 
@@ -88,23 +84,27 @@ ls
 ```
 
 ---
+![Upload Files Screenshot](images/IMAGE!8.jpg)
 
 # 5. Install Python & Required Libraries
 
 Inside the EC2 terminal:
 
 ```bash
-sudo yum install python3 -y
-pip3 install pandas matplotlib psutil
+sudo yum install -y python3 python3-pip
+pip3 install pandas matplotlib
 ```
 
 ---
+![Python Install Screenshot](images/IMAGE!9.jpg)
 
 # 6. Run the Scheduling Simulator
 
 ```bash
 python3 scheduling.py
 ```
+![Run Script Screenshot](images/IMAGE!10.jpg)
+
 
 This will:
 
