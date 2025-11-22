@@ -85,8 +85,7 @@ ls
 ```
 
 ---
-![Upload Files Screenshot](images/IMAGE!8.jpg)
-
+![Upload Files Screenshot](img/IMAGE!8.jpg)
 # 5. Install Python & Required Libraries
 
 Inside the EC2 terminal:
@@ -97,14 +96,15 @@ pip3 install pandas matplotlib
 ```
 
 ---
-![Python Install Screenshot](images/IMAGE!9.jpg)
+![Python Install Screenshot](img/IMAGE!9.jpg)
 
 # 6. Run the Scheduling Simulator
 
 ```bash
 python3 scheduling.py
 ```
-![Run Script Screenshot](images/IMAGE!10.jpg)
+
+![Run Script Screenshot](img/IMAGE!10.jpg))
 
 
 This will:
