@@ -1,4 +1,4 @@
-# EC2_SETUP.md  
+# EC2_SETUP.md
 ## AWS EC2 Setup Guide for OS Scheduling Project
 
 This document explains how to:
@@ -18,7 +18,6 @@ This document explains how to:
 ![Step 1 AWS Console](/mnt/data/e64ec389-d092-4d7f-bd29-9cf7c9657ef8.jpg)
 
 1. Go to **AWS Console → EC2**  
-
 
 ### Step 2 — Search for EC2  
 ![Step 2 Search EC2](/mnt/data/87f9cef1-d0c6-47e1-9599-ca68b439ce49.jpg)
@@ -76,14 +75,13 @@ You are now inside the Linux machine.
 
 # 4. Upload Project Files to EC2 (SCP)
 
-From your laptop, run:
+From your laptop:
 
 ```powershell
-scp -i "keypair.pem" scheduling.py subnetting.py \
-ec2-user@ec2-44-212-94-109.compute-1.amazonaws.com:/home/ec2-user/
+scp -i "keypair.pem" scheduling.py subnetting.py ec2-user@ec2-44-212-94-109.compute-1.amazonaws.com:/home/ec2-user/
 ```
 
-To verify on EC2:
+Verify on EC2:
 
 ```bash
 ls
@@ -128,8 +126,7 @@ ls *.png
 From your local system:
 
 ```powershell
-scp -i "keypair.pem" \
-ec2-user@ec2-44-212-94-109.compute-1.amazonaws.com:/home/ec2-user/*.png .
+scp -i "keypair.pem" ec2-user@ec2-44-212-94-109.compute-1.amazonaws.com:/home/ec2-user/*.png .
 ```
 
 This downloads all charts into your current folder.
@@ -148,4 +145,3 @@ This downloads all charts into your current folder.
 # Done!
 
 Your EC2 instance is fully set up to run the OS Scheduling Simulator.
-
