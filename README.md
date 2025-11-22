@@ -113,16 +113,4 @@ python3 subnetting.py
 
 ---
 
-#  Final Notes
-
-This project is designed to be:
-- **Academic‑friendly** (clear logic + explanations)  
-- **Developer‑friendly** (clean code structure + modular design)  
-- **Professional** (organized documentation + predictable outputs)
-
-If you want, I can also add:
-- Example screenshots  
-- Output samples  
-- Badges (Python version, license, OS compatibility)  
-- A full architecture diagram  
 
