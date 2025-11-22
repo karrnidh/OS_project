@@ -22,10 +22,10 @@ This document explains how to:
 ### Step 2 — Search for EC2  
 ![Step 2 Search EC2](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!2.jpg)
 
-### Step 3 — Open EC2 Dashboard  
+### Step 3 — Open EC2 Dashboard and Click Launch Instance
 ![Step 3 EC2 Dashboard](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!3.jpg)
 
-2. Click **Launch Instance**  
+2. After Clicking Launch Instance 
 ![Launch Instance](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!4.jpg)
 
 
