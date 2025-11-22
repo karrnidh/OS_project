@@ -104,7 +104,7 @@ pip3 install pandas matplotlib
 python3 scheduling.py
 ```
 
-![Run Script Screenshot](img/IMAGE!10.jpg))
+![Run Script Screenshot](img/IMAGE!10.jpg)
 
 
 This will:
