@@ -15,19 +15,19 @@ This document explains how to:
 # 1. Launch EC2 Instance
 
 ### Step 1 — Open AWS Console  
-![Step 1 AWS Console](/mnt/data/e64ec389-d092-4d7f-bd29-9cf7c9657ef8.jpg)
+![Step 1 AWS Console](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!1.jpg)
 
 1. Go to **AWS Console → EC2**  
 
 ### Step 2 — Search for EC2  
-![Step 2 Search EC2](/mnt/data/87f9cef1-d0c6-47e1-9599-ca68b439ce49.jpg)
+![Step 2 Search EC2](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!2.jpg)
 
 ### Step 3 — Open EC2 Dashboard  
-![Step 3 EC2 Dashboard](/mnt/data/6f1e50b2-b5c0-402f-8485-9cfd1b443982.jpg)
+![Step 3 EC2 Dashboard](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!3.jpg)
 
 2. Click **Launch Instance**  
+![Launch Instance](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!4.jpg)
 
-![Launch Instance](/mnt/data/a061eaff-8cf8-4377-8762-4483604c960d.jpg)
 
 3. Choose AMI → **Red Hat Linux**  
 4. Instance type → **t3.micro (Free-tier eligible)**  
@@ -36,7 +36,7 @@ This document explains how to:
    - Allow **SSH (port 22)** from *My IP*  
 7. Click **Launch Instance**
 
-![Instance Details](/mnt/data/0e155284-2d99-49d3-b094-5b9e48f962d9.jpg)
+![Instance Details](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!5.jpg)
 
 Once launched, copy:
 
@@ -57,7 +57,7 @@ icacls keypair.pem /grant:r "$($env:UserName):(R)"
 
 ---
 
-![SSH Instructions](/mnt/data/fdeb5fb8-1703-4b3a-bc05-e14f4ea17657.jpg)
+![SSH Instructions](https://raw.githubusercontent.com/karrnidh/OS_project/main/img/IMAGE!6.jpg)
 
 # 3. SSH Into EC2
 
