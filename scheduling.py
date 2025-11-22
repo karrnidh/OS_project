@@ -473,15 +473,12 @@ def main():
        - Generate a Gantt chart.
     5. Print a summary comparison table of average waiting and turnaround times.
     """
-    # 1) Fetch top limit processes from the system (or sample data)
     df = fetch_processes(limit=5)
     print("\nLive Linux processes:")
     print(df[["PID", "COMMAND", "ETIMES", "PRI", "NI", "PCPU"]])
 
-    # 2) Convert process info into a list of Job objects
     jobs = df_to_jobs(df)
 
-    # 3) Define the scheduling algorithms we want to compare
     algos = {
         "FCFS": fcfs,
         "SJF": sjf,
@@ -489,28 +486,23 @@ def main():
         "Priority": priority_scheduling
     }
 
-    summary = []  # To store (algorithm_name, avg_waiting, avg_turnaround)
+    summary = []
 
-    # Run each scheduling algorithm on the same base set of jobs
     for name, func in algos.items():
-        js, gantt = func(jobs)  # js: completed Job list, gantt: chart data
+        js, gantt = func(jobs)
         dfres, avg_wt, avg_tat = compute_metrics(js)
 
         print(f"\n--- {name} ---")
         print(dfres)
         print(f"Avg Waiting = {avg_wt:.2f}, Avg Turnaround = {avg_tat:.2f}")
 
-        # Create the Gantt chart for this algorithm
         plot_gantt(gantt, f"Gantt Chart - {name}")
-
-        # Add metrics to the summary table
         summary.append((name, avg_wt, avg_tat))
 
-    # 4) Show a final comparison table across all algorithms
     print("\nSummary Comparison:")
     print(pd.DataFrame(summary, columns=["Algorithm", "Avg Waiting", "Avg Turnaround"]))
 
 
-# Run the main function if this script is executed directly
-if name == "main":
+# Run the main function only when executed directly
+if __name__ == "__main__":
     main()
