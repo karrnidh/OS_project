@@ -91,8 +91,10 @@ ls
 Inside the EC2 terminal:
 
 ```bash
+sudo yum install -y git
 sudo yum install -y python3 python3-pip
 pip3 install pandas matplotlib
+
 ```
 
 ---
