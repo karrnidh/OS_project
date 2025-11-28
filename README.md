@@ -112,12 +112,12 @@ python3 subnetting.py
 ```
 
 ---
-### Clone the Repository
-'''bash
+# Clone the Repository
+```bash
 git clone https://github.com/karrnidh/OS_project.git
 cd OS_project
-'''
-### To pull the latest updates:
-'''bash
+```
+# To pull the latest updates:
+```bash
 git pull origin main
-'''
+```
